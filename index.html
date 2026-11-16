@@ -19,9 +19,11 @@
 
 	<!-- Pretendard -->
 	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+	<meta name="theme-color" content="#191c1f">
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper.min.css">
 	<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -103,6 +105,7 @@
 					<div class="hero__overlay"></div>
 				</div>
 
+
 				<div class="hero__content">
 					<h1 class="hero__title" data-hero-title>
 						<span class="line"><span class="line__in">OUTSTANDING</span></span>
@@ -134,7 +137,6 @@
 							<img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-service-1.png" alt="이엠스포츠 렌탈샵" width="816" height="480">
 						</div>
 						<div class="card__body">
-							<span class="card__no">01</span>
 							<h3 class="card__title">장비렌탈</h3>
 							<p class="card__desc">용평스키장에 위치한 평창 라마다호텔 1F<br>최신/고급 제품의 스키, 보드 장비렌탈</p>
 							<span class="card__more">자세히 보기</span>
@@ -145,7 +147,6 @@
 							<img src="https://emsports.co.kr/wp-content/uploads/2024/01/new-lesson.png" alt="스키레슨" width="816" height="480" loading="lazy">
 						</div>
 						<div class="card__body">
-							<span class="card__no">02</span>
 							<h3 class="card__title">스키레슨</h3>
 							<p class="card__desc">국내 최고 엘리트 스포츠 전문가들의<br>차별화된 티칭 케어 서비스 제공</p>
 							<span class="card__more">자세히 보기</span>
@@ -155,19 +156,18 @@
 			</div>
 		</section>
 
-		<!-- ============ 3. 장비렌탈 (가로 스크롤 갤러리) ============ -->
+		<!-- ============ 3. 장비렌탈 (슬라이더) ============ -->
 		<section class="rental" id="rental">
-			<div class="rental__pin">
+			<div class="rental__inner">
 				<div class="container">
 					<div class="center">
 						<h2 class="h2" data-lines><span class="accent">최신/고급 제품</span>의<br>스키, 보드 장비렌탈</h2>
 						<p class="lead" data-fade>빈손으로 편하게 방문하세요.<br><strong>어린이부터 어른까지 다양한 라인업</strong>으로 준비되어 있습니다.</p>
-						<a href="/service-1/" title="장비렌탈" class="btn btn--dark" data-fade><span>렌탈장비 미리보기</span></a>
+						<a href="/service-1/" title="장비렌탈" class="btn btn--light" data-fade><span>렌탈장비 미리보기</span></a>
 					</div>
 				</div>
 
-				<div class="track-wrap">
-					<div class="swiper rental-swiper">
+				<div class="swiper rental-swiper">
 					<ul class="swiper-wrapper">
 						<li class="swiper-slide"><img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-shop-01.png" alt="이엠스포츠" width="900" height="1200" loading="lazy"></li>
 						<li class="swiper-slide"><img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-shop-04.png" alt="이엠스포츠" width="900" height="1200" loading="lazy"></li>
@@ -178,20 +178,19 @@
 						<li class="swiper-slide"><img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-shop-08.png" alt="이엠스포츠" width="900" height="1200" loading="lazy"></li>
 						<li class="swiper-slide"><img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-shop-03.png" alt="이엠스포츠" width="900" height="1200" loading="lazy"></li>
 					</ul>
-					</div>
 				</div>
 			</div>
 		</section>
 
 		<!-- ============ 4. 스키 레슨 (영상) ============ -->
 		<section class="lesson" id="lesson">
-			<div class="lesson__pin">
+			<div class="lesson__inner">
 				<div class="lesson__text" data-lesson-text>
 					<h2 class="h2" data-lines><span class="accent">엘리트 스포츠 전문가</span>의<br>스키 레슨</h2>
 					<p class="lead"><strong>전 현직 국가대표, 상비군, 프로선수</strong>와 함께<br>차별화된 티칭 케어 서비스를 제공해 드립니다.</p>
-					<a href="/service-2" class="btn btn--light"><span>스키 레슨 미리보기</span></a>
+					<a href="/service-2" class="btn btn--dark"><span>스키 레슨 미리보기</span></a>
 				</div>
-				<div class="lesson__video" data-video>
+				<div class="lesson__video">
 					<iframe title="어린이 1:1 스키 강습 - 평창 라마다호텔 1F '이엠스포츠'" src="https://www.youtube.com/embed/EH-s9LJYfw0?feature=oembed" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 				</div>
 			</div>
@@ -239,7 +238,7 @@
 
 		<!-- ============ 6. 인스타그램 ============ -->
 		<section class="insta" id="insta">
-			<div class="insta__bg" data-parallax>
+			<div class="insta__bg">
 				<img src="https://emsports.co.kr/wp-content/uploads/2023/12/img-banner-bg.jpg" alt="" loading="lazy">
 			</div>
 			<div class="insta__veil"></div>
@@ -256,7 +255,7 @@
 	<!-- ============ FOOTER ============ -->
 	<footer class="footer" id="footer">
 		<div class="container">
-			<div class="footer__top" data-footer-reveal>
+			<div class="footer__top">
 				<div class="footer__menus">
 					<div class="footer__col">
 						<p class="footer__title">장비렌탈</p>
@@ -289,7 +288,7 @@
 				</div>
 			</div>
 
-			<div class="footer__bottom" data-footer-reveal>
+			<div class="footer__bottom">
 				<div class="footer__sns">
 					<p class="footer__title">바로가기</p>
 					<ul>
@@ -328,7 +327,6 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js"></script>
 	<script src="js/main.js"></script>
 </body>

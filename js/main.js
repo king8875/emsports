@@ -1,13 +1,14 @@
 /* =========================================================
    EMSPORTS main — GSAP + ScrollTrigger
-   Revolut 메인의 스크롤 연출(고정 히어로 → 시트 덮기, 카드 스케일 인,
-   가로 스크롤 갤러리, 풀블리드 영상 확장, 마퀴, 하단 도크 CTA)을 재해석
+   Revolut 메인의 스크롤 연출(고정 히어로 → 시트 덮기, 줄 단위 리빌,
+   2줄 마퀴, 패럴랙스)을 재해석. 슬라이더는 Swiper.
    ========================================================= */
 (function () {
 	"use strict";
 
 	if (!window.gsap || !window.ScrollTrigger) return;
-	gsap.registerPlugin(ScrollTrigger, window.ScrollToPlugin);
+	gsap.registerPlugin(ScrollTrigger);
+	ScrollTrigger.config({ ignoreMobileResize: true }); // 모바일 주소창 높이 변화로 인한 재계산 방지
 	gsap.defaults({ ease: "power3.out", duration: 1 });
 
 	var $ = function (s, c) { return (c || document).querySelector(s); };
@@ -46,13 +47,13 @@
 		burger.addEventListener("click", function () { toggle(); });
 		$$("a", mnav).forEach(function (a) { a.addEventListener("click", function () { toggle(false); }); });
 		window.addEventListener("keydown", function (e) { if (e.key === "Escape" && open) toggle(false); });
-		window.matchMedia("(min-width: 1101px)").addEventListener("change", function (e) { if (e.matches && open) toggle(false); });
+		window.matchMedia("(min-width: 1024px)").addEventListener("change", function (e) { if (e.matches && open) toggle(false); });
 	})();
 
 	/* Back to top */
 	if (totop) {
 		totop.addEventListener("click", function () {
-			gsap.to(window, { scrollTo: 0, duration: 1.2, ease: "power3.inOut" });
+			window.scrollTo({ top: 0, behavior: "smooth" });
 		});
 	}
 
@@ -72,6 +73,17 @@
 
 
 	/* ---------------------------------------------------------
+	   헤더: 히어로를 지나면 흰색 바 (모션 설정과 무관하게 동작)
+	   --------------------------------------------------------- */
+	ScrollTrigger.create({
+		trigger: "#intro", start: "top 72px", end: "max",
+		// end 지점(페이지 맨 아래)에서 클래스가 빠지지 않도록 진입/역진입 때만 토글
+		onEnter: function () { header.classList.add("is-solid"); },
+		onLeaveBack: function () { header.classList.remove("is-solid"); },
+		onRefresh: function (self) { header.classList.toggle("is-solid", self.scroll() >= self.start); }
+	});
+
+	/* ---------------------------------------------------------
 	   Rental carousel (Swiper)
 	   --------------------------------------------------------- */
 	if (window.Swiper && $(".rental-swiper")) {
@@ -88,19 +100,8 @@
 	   --------------------------------------------------------- */
 	var mm = gsap.matchMedia();
 
-	mm.add({
-		motion: "(prefers-reduced-motion: no-preference)",
-		desktop: "(min-width: 768px)"
-	}, function (ctx) {
-		var c = ctx.conditions;
-		if (!c.motion) return;
-
-		/* ---- 헤더: 히어로를 지나면 흰색 바 ---- */
-		ScrollTrigger.create({
-			trigger: "#intro", start: "top 72px", end: "max",
-			toggleClass: { targets: header, className: "is-solid" }
-		});
-
+	// 모션 줄이기 설정이면 모든 스크롤 연출을 건너뛴다(콘텐츠는 기본 상태로 표시)
+	mm.add("(prefers-reduced-motion: no-preference)", function () {
 		/* ---- 1. HERO ---- */
 		var heroLines = $$("[data-hero-title] .line__in");
 		var introTl = gsap.timeline({ defaults: { ease: "power4.out" } });
@@ -116,8 +117,7 @@
 		});
 		heroTl
 			.to(".hero__content", { yPercent: -18, autoAlpha: 0, duration: .7 }, 0)
-			.to(".hero__bg img", { scale: 1.12 }, 0)
-			.to(".hero__overlay", { opacity: 1.6 }, 0);
+			.fromTo(".hero__bg", { scale: 1 }, { scale: 1.08, duration: 1, immediateRender: false }, 0);
 
 		/* ---- 공통: 줄 단위 마스크 리빌 ---- */
 		$$("[data-lines]").forEach(function (el) {
@@ -136,32 +136,9 @@
 			});
 		});
 
-		/* ---- 2. 서비스 카드: 스케일 인 + 이미지 패럴랙스 ---- */
-		$$("[data-card]").forEach(function (card, i) {
-			var img = $("img", card);
-			gsap.fromTo(card,
-				{ y: 120, scale: .86, autoAlpha: 0 },
-				{
-					y: 0, scale: 1, autoAlpha: 1, ease: "none",
-					scrollTrigger: { trigger: card, start: "top 100%", end: "top 55%", scrub: .6 }
-				});
-			gsap.fromTo(img, { scale: 1.18 }, {
-				scale: 1, ease: "none",
-				scrollTrigger: { trigger: card, start: "top 100%", end: "bottom 30%", scrub: true }
-			});
-		});
-
-		/* ---- 4. 레슨: 영상이 카드에서 풀 사이즈로 확장 ---- */
-		gsap.fromTo("[data-video]", { y: 90, scale: .9 }, {
-			y: 0, scale: 1, ease: "none",
-			scrollTrigger: { trigger: ".lesson", start: "top 70%", end: "top 10%", scrub: .6 }
-		});
-		gsap.from("[data-lesson-text] .btn", {
-			y: 30, autoAlpha: 0,
-			scrollTrigger: { trigger: "[data-lesson-text]", start: "top 85%", toggleActions: "play none none none" }
-		});
-		gsap.from("[data-lesson-text] .lead", {
-			y: 30, autoAlpha: 0,
+		/* ---- 4. 레슨: 설명·버튼 페이드 업 ---- */
+		gsap.from(["[data-lesson-text] .lead", "[data-lesson-text] .btn"], {
+			y: 30, autoAlpha: 0, stagger: .1,
 			scrollTrigger: { trigger: "[data-lesson-text]", start: "top 85%", toggleActions: "play none none none" }
 		});
 
@@ -198,14 +175,6 @@
 		gsap.fromTo(".insta__bg", { yPercent: -9 }, {
 			yPercent: 9, ease: "none",
 			scrollTrigger: { trigger: ".insta", start: "top bottom", end: "bottom top", scrub: true }
-		});
-
-		/* ---- 푸터 ---- */
-		$$("[data-footer-reveal]").forEach(function (el, i) {
-			gsap.from(el, {
-				y: 50, autoAlpha: 0, duration: 1, delay: i * .1,
-				scrollTrigger: { trigger: el, start: "top 95%", toggleActions: "play none none none" }
-			});
 		});
 
 		/* ---- 퀵메뉴: 로드 후 우측에서 등장 ---- */
