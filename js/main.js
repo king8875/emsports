@@ -142,31 +142,15 @@
 			scrollTrigger: { trigger: "[data-lesson-text]", start: "top 85%", toggleActions: "play none none none" }
 		});
 
-		/* ---- 5. 파트너: 2줄 마퀴(반대 방향) + 스크롤 속도 연동 ---- */
-		var marquees = $$("[data-marquee]");
-		var loops = marquees.map(function (m, i) {
-			var t = $(".marquee__track", m);
-			var n = t.children.length;
-			t.innerHTML += t.innerHTML; // 이음새 없는 루프를 위해 복제
-			for (var k = n; k < t.children.length; k++) t.children[k].setAttribute("aria-hidden", "true");
-			var tw = m.dataset.dir === "-1"
-				? gsap.fromTo(t, { xPercent: -50 }, { xPercent: 0, ease: "none", duration: 46, repeat: -1 })
-				: gsap.to(t, { xPercent: -50, ease: "none", duration: 40, repeat: -1 });
-			m.addEventListener("mouseenter", function () { gsap.to(tw, { timeScale: 0, duration: .6, overwrite: true }); });
-			m.addEventListener("mouseleave", function () { gsap.to(tw, { timeScale: 1, duration: .6, overwrite: true }); });
-			gsap.from(m, {
-				autoAlpha: 0, y: 40, delay: i * .12,
-				scrollTrigger: { trigger: m, start: "top 95%", toggleActions: "play none none none" }
-			});
-			return tw;
-		});
-		ScrollTrigger.create({
-			trigger: ".partners", start: "top bottom", end: "bottom top",
-			onUpdate: function (self) {
-				var v = Math.min(Math.abs(self.getVelocity()) / 350, 6);
-				loops.forEach(function (tw) {
-					gsap.to(tw, { timeScale: 1 + v, duration: .25, overwrite: true });
-					gsap.to(tw, { timeScale: 1, duration: 1.2, delay: .25, overwrite: false });
+		/* ---- 5. 파트너: 로고 그리드가 위에서 아래로 순차 등장 ---- */
+		// 칸(흰 배경)은 그대로 두고 로고만 등장시켜, 헤어라인 격자가 먼저 보이도록 한다.
+		gsap.set(".logo-grid img", { opacity: 0, y: 20 });
+		ScrollTrigger.batch(".logo-grid li", {
+			start: "top 92%",
+			onEnter: function (els) {
+				gsap.to(els.map(function (li) { return li.firstElementChild; }), {
+					opacity: 1, y: 0, duration: .8, stagger: .06, overwrite: true,
+					clearProps: "opacity,transform"
 				});
 			}
 		});
@@ -179,15 +163,6 @@
 
 		/* ---- 퀵메뉴: 로드 후 우측에서 등장 ---- */
 		gsap.from(".quick__item", { x: 40, autoAlpha: 0, duration: .8, stagger: .08, delay: 1.2 });
-
-		return function () {
-			// matchMedia revert 시 마퀴 복제 노드 정리
-			marquees.forEach(function (m) {
-				var t = $(".marquee__track", m);
-				var half = t.children.length / 2;
-				while (t.children.length > half) t.removeChild(t.lastChild);
-			});
-		};
 	});
 
 	/* 이미지/폰트 로딩 후 위치 재계산 */
