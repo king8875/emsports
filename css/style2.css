@@ -238,11 +238,18 @@ button { font: inherit; color: inherit; background: none; border: 0; cursor: poi
 
 /* ---------- footer ---------- */
 .footer { background: var(--panel); color: #fff; padding: 0 0 clamp(48px, 6vw, 80px); }
-.footer__grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 32px 24px; padding-top: clamp(40px, 5vw, 64px); border-top: 1px solid rgba(255,255,255,.14); }
+.footer__grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px 24px; padding-top: 40px; }
 .footer__title { margin-bottom: 14px; font-size: 14px; font-weight: 600; }
 .footer li { margin-bottom: 8px; font-size: 14px; color: rgba(255,255,255,.62); }
 .footer a:hover { color: #fff; }
-.footer__copy { margin-top: 48px; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,.5); }
+.footer__bar { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 48px; padding-top: 28px; border-top: 1px solid rgba(255,255,255,.14); }
+.footer__logo img { display: block; height: 24px; width: auto; }
+.footer__social { display: flex; gap: 8px; }
+.footer__social li { margin: 0; }
+.footer__social a { display: grid; place-items: center; width: 32px; height: 32px; color: rgba(255,255,255,.7); }
+.footer__social a:hover { color: #fff; }
+.footer__social svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.footer__copy { margin-top: 28px; font-size: 13px; line-height: 1.8; color: rgba(255,255,255,.5); }
 .footer__copy a { text-decoration: underline; text-underline-offset: 3px; }
 
 /* ---------- responsive ---------- */

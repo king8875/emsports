@@ -159,9 +159,10 @@
 			// 카드는 행과 함께 S0배 확대돼 있으므로 로컬 좌표로는 1/S0 크기·역오프셋으로 배치한다.
 			var winImg = $(".pcard__bgimg", center);
 			winImg.style.width = (W / S0) + "px";
-			winImg.style.height = (H / S0) + "px";
 			winImg.style.left = (-(W / 2 - cardW / 2) / S0) + "px";
 			winImg.style.top = (-(finalTop + y0) / S0) + "px";
+			// 화면이 좁아 프레임 상단이 낮아지면 (H - frameTop)/S0 < 카드 높이가 되어 사진 아래에 빈 공간이 생긴다 → 카드 아래 끝까지 덮도록 높이를 늘린다.
+			winImg.style.height = Math.max(H / S0, center.offsetHeight + (finalTop + y0) / S0) + "px";
 
 			// 전환 중 사진 자체도 카드 안에서 조금 더 줄어든다(더 많은 장면이 보이도록).
 			// 기준점은 카드 아래쪽 중앙 → 위쪽(스키어 머리 쪽)이 더 드러남. 사진이 카드를 벗어나지 않는 최소 배율을 계산해 제한.
